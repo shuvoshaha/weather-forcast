@@ -39,11 +39,35 @@ const Table = () => {
             )
         }
 
-        if(sorting.field){
-            const reversed = sorting.order === "ase" ? 1 : -1;
+        // Sorting
+        const reversed = sorting.order === "ase" ? 1 : -1;
+        if(sorting.field === "min"){
 
             computeData = computeData.sort(
                 (a, b) => { return reversed * (a.temp.min - b.temp.min)}
+            )
+
+        } else if(sorting.field === "max"){
+            computeData = computeData.sort(
+                (a, b) => { return reversed * (a.temp.max - b.temp.max)}
+            )
+        }
+
+        else if(sorting.field === "status"){
+            computeData = computeData.sort(
+                (a, b) =>{ 
+                    const nameA = a.weather[0].main.toLowerCase();
+                    const nameB = b.weather[0].main.toLowerCase()
+
+                    if(nameA < nameB){
+                        return -1
+                    } 
+                    else if(nameA > nameB){
+                        return 1
+                    } else{
+                        return 0
+                    }
+                }
             )
         }
 
@@ -60,15 +84,16 @@ const Table = () => {
         <div className="table">
             <div className="container">
                 <h4>Monthly Data forcast</h4>
+
                 {/* Table Header */}
                 <div className="table_header">
+
                     <Pagination
                         total={totalItems}
                         currentPage={currentPage}
                         postPerPage={postPerPage}
                         onChangePage={value => setCurrentPage(value)}
                     />
-
                     <Filter
                         onSearch={(val => setSearch(val))}
                     />
@@ -79,8 +104,9 @@ const Table = () => {
                 <table border="1">
                     <thead>
                         <Header 
-                        onSort={(field, order) => setSorting({ field, order })}
-                        headers={headers} />
+                            onSort={(field, order) => setSorting({ field, order })}
+                            headers={headers} 
+                        />
                     </thead>
 
                     <tbody>

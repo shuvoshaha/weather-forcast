@@ -12,7 +12,7 @@ const Header = () => {
                             data && data.map((item, indx) =>{
                                 return (
                                     <li key={indx}>
-                                        <NavLink to={item.path} activeClassName="active_item">
+                                        <NavLink to={item.path} exact activeClassName="active_item">
                                             { item.name }
                                         </NavLink>
                                     </li>

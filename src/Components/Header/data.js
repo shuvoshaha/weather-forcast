@@ -1,7 +1,8 @@
 export const data = [
     {
         name: "Daily Forcast data",
-        path: "/"
+        path: "/",
+        exact: 'exact'
     },
     {
         name: "Monthly Forcast data",

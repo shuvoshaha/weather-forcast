@@ -1,25 +1,20 @@
-import { data } from './data'
-import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { userLogout } from '../../redux/action/action'; 
 import './style.scss'
 
 const Header = () => {
+    const dispatch = useDispatch();
+    const isLogin = localStorage.getItem("login")
     return (
         <div className="header">
             <div className="container">
                 <nav>
-                    <ul>
-                        {
-                            data && data.map((item, indx) =>{
-                                return (
-                                    <li key={indx}>
-                                        <NavLink to={item.path} exact activeClassName="active_item">
-                                            { item.name }
-                                        </NavLink>
-                                    </li>
-                                )
-                            })
-                        }
+                    <h2>Data Table with Chats</h2>
+                    {
+                        isLogin && <ul>
+                        <li onClick={() => dispatch(userLogout())}>Logout</li>
                     </ul>
+                    }
                 </nav>
             </div>
         </div>

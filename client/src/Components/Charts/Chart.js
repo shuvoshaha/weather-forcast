@@ -4,39 +4,53 @@ import { useSelector } from 'react-redux';
 import './style.scss'
 
 const Chart = () => {
-    const state = useSelector(state => state.temp.daily);
-    const min_temp = state?.map(data => data.temp.min)
-    const max_temp = state?.map(data => data.temp.max)
+    const state = useSelector(state => state.userinfo.userInfo);
+    const students = state?.filter(data => data.profession === "Student").map(data => data.time_slot)
+    const jobHolder = state?.filter(data => data.profession === "Job Holder").map(data => data.time_slot)
+    const business = state?.filter(data => data.profession === "Business").map(data => data.time_slot)
 
-
+    // Chart Settings
     const settings = {
         options: {
+            stroke: {
+                curve: 'smooth',
+            },
             chart: {
                 id: "weather_data"
-            }, 
-            xaixs: {
-                categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
-            }
-        }, 
+            },
+            yaixs: [
+                { seriesName: "Students" },
+                { seriesName: "Job Holder" },
+                { seriesName: "Business" },
+            ]
+        },
         series: [
             {
-                name: "Min Temp",
-                data: min_temp
+                name: "Students",
+                data: students
             },
             {
-                name: "Max Temp",
-                data: max_temp
-            }
+                name: "Job Holder",
+                data: jobHolder
+            },
+            {
+                name: "Business",
+                data: business
+            },
+
         ]
     }
     return (
         <div className="chart">
-            <Charts
-                options={settings.options}
-                series={settings.series}
-                type="bar"
-                
-            />
+            {
+                state ? <Charts
+                    options={settings.options}
+                    series={settings.series}
+                    type="line"
+
+                />
+                    : <p>Loading Chart...</p>
+            }
         </div>
     )
 }

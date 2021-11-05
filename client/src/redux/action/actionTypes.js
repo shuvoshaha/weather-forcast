@@ -1,6 +1,9 @@
 export const actionTypes = {
     TEMP: "TEMP",
-    FILTER: "FILTER",
-    SORTING: "SORTING",
-    
+    REGISTER: "REGISTER",
+    LOGIN: "LOGIN",
+    LOGOUT: "LOGOUT",
+    INFO: "INFO",
+    ERROR: "ERROR"
+
 }

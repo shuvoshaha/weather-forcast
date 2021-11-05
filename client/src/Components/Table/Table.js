@@ -1,16 +1,18 @@
 import { useMemo, useState } from 'react';
 import Pagination from './Pagination'
 import { useSelector } from 'react-redux';
+import { headers } from './headers';
 import Filter from './Filter';
 import Header from './Header'
 import './style.scss';
+import TableData from './TableData';
 
 const Table = () => {
-    const state = useSelector(state => state.temp);
-    const { daily } = state;
+    const state = useSelector(state => state.userinfo);
+    const { userInfo } = state;
     const [totalItems, setTotalItems] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
-    const [postPerPage] = useState(3)
+    const [postPerPage] = useState(200)
     const [search, setSearch] = useState("");
     const [sorting, setSorting] = useState({ field: '', order: '' })
 
@@ -18,24 +20,23 @@ const Table = () => {
     const indexOfFirst = (currentPage - 1) * postPerPage;
     const indexOfLast = (currentPage - 1) * postPerPage + postPerPage;
 
-    // Table header
-    const headers = [
-        { name: "Min Temp", field: "min", sortable: true },
-        { name: "Max Temp", field: "max", sortable: true },
-        { name: "Status", field: "status", sortable: true }
-    ]
 
     // Sorting, Paginate, Filtering
     const customState = useMemo(() => {
-        let computeData = daily;
+        let computeData = userInfo;
 
         // Filtering
         if (search) {
             computeData = computeData.filter(
                 data =>
-                    data.weather[0].main.toLowerCase().includes(search.toLowerCase()) ||
-                    data.temp.min.toString().includes(search.toString()) ||
-                    data.temp.max.toString().includes(search.toString())
+                    data.user_id.toString().includes(search.toString()) ||
+                    data.first_name.toLowerCase().includes(search.toLowerCase()) ||
+                    data.last_name.toString().includes(search.toString()) ||
+                    data.mobile.toString().includes(search.toString()) ||
+                    data.email.toLowerCase().includes(search.toLowerCase()) ||
+                    data.ip_address.toString().includes(search.toString()) ||
+                    data.age.toString().includes(search.toString()) ||
+                    data.email_address.toLowerCase().includes(search.toLowerCase()) 
             )
         }
 
@@ -53,31 +54,13 @@ const Table = () => {
             )
         }
 
-        else if(sorting.field === "status"){
-            computeData = computeData.sort(
-                (a, b) =>{ 
-                    const nameA = a.weather[0].main.toLowerCase();
-                    const nameB = b.weather[0].main.toLowerCase()
-
-                    if(nameA < nameB){
-                        return -1
-                    } 
-                    if(nameA > nameB){
-                        return 1
-                    }
-                    return 0
-                    
-                }
-            )
-        }
-
         
         setTotalItems(computeData?.length)
 
         // Data Slice
         return computeData?.slice(indexOfFirst, indexOfLast);
 
-    }, [daily, search, sorting, indexOfFirst, indexOfLast])
+    }, [userInfo, search, sorting, indexOfFirst, indexOfLast])
 
 
     return (
@@ -112,14 +95,8 @@ const Table = () => {
                     <tbody>
                         {
                            customState?.map((item, index) => {
-
                                 return (
-                                    <tr key={index}>
-                                        {/* <td>{ new Date(item.dt*1000 + (item.timezone_offset*1000)).getUTCDate() } </td> */}
-                                        <td>{item.temp.min} &deg; deg</td>
-                                        <td>{item.temp.max} &deg; deg</td>
-                                        <td> {item.weather[0].main} </td>
-                                    </tr>
+                                    <TableData key={index} item={item} />
                                 )
                             }) 
                         }

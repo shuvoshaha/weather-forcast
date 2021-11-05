@@ -1,0 +1,38 @@
+.header{
+    width: 100%;
+    margin: 1rem auto;
+
+    nav{
+        width: 50%;
+        margin: auto;
+
+        ul{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            li{
+                flex: 1;
+                list-style: none;
+
+                a{
+                    text-decoration: none;
+                    font-size: 0.875rem;
+                    color: #404040;
+                    font-weight: 500;
+
+                    &:hover{
+                        text-decoration: underline;
+                        color: crimson;
+                    }
+                }
+                
+            }
+
+            .active_item{
+                text-decoration: underline;
+                color: crimson;
+            }
+        }
+    }
+}
